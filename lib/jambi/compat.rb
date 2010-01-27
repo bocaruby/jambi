@@ -8,7 +8,10 @@ module Jambi::Compat
   end
 
   def self.loaded_specs
-    {}
+    Jambi.loaded_gems.inject({}) do |h, k|
+      h[k.first] = k.last.spec
+      h
+    end
   end
 
   def self.clear_paths
@@ -45,6 +48,7 @@ module Jambi::Compat
 
   class Dependency
     attr_reader :name
+    attr_accessor :version_requirements
 
     def initialize(name, req)
       @name = name
@@ -52,11 +56,9 @@ module Jambi::Compat
     end
 
     def to_a
-      [@name, @req.version]
-    end
-
-    def version_requirements
-      
+      version = @req.version
+      version = "= #{version}" if version =~ /^[0-9]/
+      [@name, version]
     end
   end
 
@@ -69,8 +71,8 @@ module Jambi::Compat
       
     end
 
-    def search(key)
-      []
+    def search(dep)
+      Jambi.gems_by(*dep.to_a).map {|g| g.spec}
     end
   end
 
@@ -91,14 +93,44 @@ module Jambi::Compat
       @info['require_paths'] || []
     end
 
-    def method_missing(meth, value)
-      @info[meth.to_s.gsub(/=/, '')] = value
+    def files
+      @info['files'] || []
+    end
+
+    def loaded_from
+      ''
+    end
+
+    def full_name
+      ''
+    end
+
+    def full_gem_path
+      ''
+    end
+
+    def respond_to?(meth)
+      meth.to_s =~ /=/ || @info.has_key?(meth.to_s)
+    end
+
+    def method_missing(meth, *value)
+      if meth.to_s =~ /=/
+        return @info[meth.to_s.gsub(/=/, '')] = value.first
+      elsif @info.has_key?(meth.to_s)
+        return @info[meth.to_s]
+      end
+
+      super
     end
   end
 
   class DependencyList
     def dependency_order
       []
+    end
+
+    def add(dep)
+      
     end
   end
 end
