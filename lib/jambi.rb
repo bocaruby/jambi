@@ -1,6 +1,6 @@
 require 'rbconfig'
 
-class Evilgems
+class Jambi
   class << self
     def engine
       @engine ||= 'ruby'
@@ -52,7 +52,7 @@ class Evilgems
 
   module RequireExtension
     def require(*args, &block)
-      candidates = Evilgems.gems(args.first)
+      candidates = Jambi.gems(args.first)
       return super if candidates.empty?
 
       if args.size == 1
@@ -65,5 +65,5 @@ class Evilgems
   end
 end
 
-Gem = Evilgems::Gem
-Object.send(:include, Evilgems::RequireExtension)
+Gem = Jambi::Gem
+Object.send(:include, Jambi::RequireExtension)
