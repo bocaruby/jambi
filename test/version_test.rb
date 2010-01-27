@@ -18,14 +18,41 @@ class VersionTest < Test::Unit::TestCase
   end
 
   def test_handles_greater_than_camparison
-    assert @version > Jambi::Gem::Version.new('1.0.0')
+    assert @version > '1.0.0'
+    assert @version.send('>', '1.0.0')
   end
 
   def test_handles_less_than_comparison
-    assert @version < Jambi::Gem::Version.new('1.5.0')
+    assert @version < '1.5.0'
+    assert @version.send('<', '1.5.0')
+    assert_equal false, @version < '1.2.0'
   end
 
   def test_handles_equals_to_comparison
-    assert @version == Jambi::Gem::Version.new('1.2.3')
+    assert @version == '1.2.3'
+    assert @version.send('==', '1.2.3')
+    assert @version.send('=', '1.2.3')
+    assert_equal false, @version == '1.0.0'
+  end
+
+  def test_handles_major_match_comparison
+    assert @version.send('~>', '1.0.0')
+    assert_equal false, @version.send('~>', '2.0.1')
+  end
+
+  def test_handles_greater_than_or_equal_to
+    assert @version >= '1.2.3'
+    assert @version.send('>=', '1.2.0')
+    assert_equal false, @version >= '1.2.5'
+  end
+
+  def test_handles_not_equal_to
+    assert @version != '1.2.1'
+    assert @version.send('!=', '1.2.1')
+    assert_equal false, @version != '1.2.3'
+  end
+
+  def test_handles_version_0
+    assert @version > '0'
   end
 end

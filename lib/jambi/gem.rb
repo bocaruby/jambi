@@ -1,7 +1,8 @@
 class Jambi::Gem
   include Comparable
 
-  autoload :Version, 'jambi/gem/version'
+  autoload :Version,  'jambi/gem/version'
+  autoload :Catalog,  'jambi/gem/catalog'
 
   attr_accessor :dir
 

@@ -3,6 +3,9 @@ class Jambi::Gem::Version
   
   def initialize(version)
     @version = parse_version(version)
+
+    # pad the version array out to four digits
+    @version[3] ||= nil
   end
 
   def parse_version(version)
@@ -26,16 +29,34 @@ class Jambi::Gem::Version
     @version[2]
   end
 
+  def normalize_other(other)
+     other.is_a?(self.class) ? other : self.class.new(other)
+  end
+
+  def to_a
+    @version
+  end
+
   def <=>(other)
-    @version.zip(other.to_a).each do |a, b|
+    @version.zip(normalize_other(other).to_a).each do |a, b|
+      a ||= -1
+      b ||= -1
       return 1 if a > b
       return -1 if a < b
     end
 
     return 0
   end
+  
+  define_method('~>') do |other|
+    self.major == normalize_other(other).major
+  end
 
-  def to_a
-    @version
+  define_method('=') do |other|
+    self == other
+  end
+
+  define_method('!=') do |other|
+    self != other
   end
 end
