@@ -4,6 +4,9 @@ class Jambi::Gem
   autoload :Version,  'jambi/gem/version'
   autoload :Catalog,  'jambi/gem/catalog'
 
+  class Exception < RuntimeError; end
+  class LoadError < Exception; end
+
   attr_accessor :dir
 
   def initialize(dir)
@@ -11,11 +14,15 @@ class Jambi::Gem
   end
 
   def version
-    @version ||= Version.new(File.basename(dir).split('-').last)
+    @version ||= Version.new(full_name.split('-').last)
   end
 
   def name
-    @name ||= File.basename(dir).split('-').first
+    @name ||= full_name.split('-').first
+  end
+
+  def full_name
+    @full_name ||= File.basename(dir)
   end
 
   def lib_dir
