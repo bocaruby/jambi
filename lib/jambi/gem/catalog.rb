@@ -1,10 +1,12 @@
 class Jambi::Gem::Catalog
+  attr_reader :dir
+
   def initialize(dir)
     @dir = dir
   end
 
   def gems
-    @gems ||= Dir["#{@dir}/*"].map {|p| Gem.new(p)}.sort
+    @gems ||= Dir["#{@dir}/*"].map {|p| Jambi::Gem.new(p)}.sort
   end
 
   def gems_by_name(name)

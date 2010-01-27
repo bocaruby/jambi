@@ -1,3 +1,14 @@
 require 'rubygems'
-require 'rack'
-require 'webrat'
+begin
+  gem 'doesntexist'
+rescue Gem::LoadError
+end
+require 'ruby-debug'
+# debugger
+# x=1
+gem 'rails', '= 2.2.2'
+# gem 'rack', '~> 1'
+# require 'rack'
+# puts Rack::VERSION.inspect
+# require 'webrat'
+

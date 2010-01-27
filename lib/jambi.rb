@@ -3,6 +3,7 @@ require 'rbconfig'
 module Jambi
   autoload :Gem,                'jambi/gem'
   autoload :RequireExtension,   'jambi/require_extension'
+  autoload :Compat,             'jambi/compat'
 
   def engine
     @engine ||= 'ruby'
@@ -25,10 +26,10 @@ module Jambi
   end
 
   def catalogs
-    @catalogs ||= [user_path, system_path].map {|p| Gem::Catalog.new(p)}
+    @catalogs ||= [user_path, system_path].map {|p| Jambi::Gem::Catalog.new(p)}
   end
 
-  def gems_by(name, version='> 0')
+  def gems_by(name, version)
     (@gems ||= {})[name] ||= catalogs.map {|c| c.gems_by_name(name)}.flatten.uniq.sort
     @gems[name].select {|gem| gem.version.send(*version.split)}
   end
@@ -38,12 +39,13 @@ module Jambi
   end
 
   def load_gem(gem)
-    $: << gem.lib_dir
+    gem.require_paths.each {|p| $:.unshift(p)}
     loaded_gems[gem.name] = gem
+    gem.load_dependencies!
   end
 
   extend self
 end
 
-Gem = Jambi::Gem
+Gem = Jambi::Compat
 Object.send(:include, Jambi::RequireExtension)
