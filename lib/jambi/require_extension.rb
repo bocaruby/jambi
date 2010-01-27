@@ -28,7 +28,7 @@ module Kernel
     
     if loaded = Jambi.loaded_gems[name]
       unless loaded.version.send(*version.split)
-         msg = "can't activate #{name} for #{version}, "
+         msg = "Can't activate #{name} for #{version}, "
          msg << "already activated #{loaded.full_name}"
          raise Gem::LoadError, msg
       end
@@ -37,7 +37,11 @@ module Kernel
 
     candidates = Jambi.gems_by(name, version)
 
-    raise Gem::LoadError if candidates.empty?
+    if candidates.empty?
+      msg = "Could not load '#{name}' "
+      msg << "version '#{version}', is it installed?"
+      raise Gem::LoadError, msg
+    end
 
     Jambi.load_gem(candidates.last)
   end
