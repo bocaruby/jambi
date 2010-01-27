@@ -37,7 +37,7 @@ module Kernel
 
     candidates = Jambi.gems_by(name, version)
 
-    raise Gem::LoadError if candidates.empty?
+    raise Gem::LoadError.new("Jambi could not load #{name} version #{version}, is it installed?") if candidates.empty?
 
     Jambi.load_gem(candidates.last)
   end
