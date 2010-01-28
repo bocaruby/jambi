@@ -1,6 +1,8 @@
 class Jambi::Gem::Version
   include Comparable
   
+  NUMBER_REGEX = /[0-9-]+/
+
   def initialize(version)
     @version = parse_version(version)
 
@@ -11,9 +13,9 @@ class Jambi::Gem::Version
   def parse_version(version)
     case version
     when Array
-      version.map {|n| Integer(n) rescue n}
+      version.map {|n| n =~ NUMBER_REGEX ? n.to_i : n}
     when String
-      version.split('.').map {|n| Integer(n) rescue n}
+      version.split('.').map {|n| n =~ NUMBER_REGEX ? n.to_i : n}
     end
   end
 
