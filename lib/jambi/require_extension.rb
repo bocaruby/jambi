@@ -2,15 +2,13 @@ module Jambi::RequireExtension
   def require(name, &block)
     return if name =~ /^rubygems/i
 
-    return super if name.include? File::SEPARATOR
-
+    # Try loading from the original require first
     begin
-      Object.gem(name, '> 0')
-    rescue Gem::LoadError
-      # swallow this
+      return super
+    rescue LoadError
     end
 
-    super
+    Object.gem(name, '> 0')
   end
 
 end

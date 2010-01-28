@@ -57,5 +57,4 @@ if defined? Gem
 end
 Gem = Jambi::Compat
 
-
 Object.send(:include, Jambi::RequireExtension)
