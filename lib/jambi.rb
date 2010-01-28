@@ -25,8 +25,13 @@ module Jambi
     @user_path ||= File.join(File.expand_path('~/'), '.gem', engine, version, 'gems')
   end
 
+  def env_path
+    return unless ENV['GEM_PATH']
+    @env_path ||= File.join(ENV['GEM_PATH'], 'gems')
+  end
+
   def catalogs
-    @catalogs ||= [user_path, system_path].map {|p| Jambi::Gem::Catalog.new(p)}
+    @catalogs ||= [env_path, user_path, system_path].map {|p| Jambi::Gem::Catalog.new(p)}
   end
 
   def gems_by(name, version)

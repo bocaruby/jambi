@@ -1,4 +1,3 @@
-require 'rubygems'
 begin
   gem 'doesntexist'
 rescue Gem::LoadError
