@@ -52,5 +52,10 @@ module Jambi
   extend self
 end
 
+if defined? Gem
+  Object.send(:remove_const, :Gem)
+end
 Gem = Jambi::Compat
+
+
 Object.send(:include, Jambi::RequireExtension)

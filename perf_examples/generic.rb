@@ -3,4 +3,4 @@ begin
 rescue Gem::LoadError
 end
 require 'ruby-debug'
-gem 'rails', '= 2.2.2'
+gem 'rails', '~> 2'

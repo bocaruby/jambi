@@ -1,5 +1,5 @@
 module Jambi::Compat
-  RubyGemsVersion = '1.3.1'
+  RubyGemsVersion = '1.3.5'
 
   LoadError = Jambi::Gem::LoadError
 
@@ -129,7 +129,7 @@ module Jambi::Compat
       []
     end
 
-    def add(dep)
+    def add(*dep)
       
     end
   end

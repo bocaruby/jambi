@@ -1,12 +1,11 @@
 module Jambi::RequireExtension
   def require(name, &block)
-    # puts "requiring #{name}"
     return if name =~ /^rubygems/i
 
     return super if name.include? File::SEPARATOR
 
     begin
-      gem(name, '> 0')
+      Object.gem(name, '> 0')
     rescue Gem::LoadError
       # swallow this
     end
@@ -24,8 +23,6 @@ module Kernel
 
     version = "= #{version}" if version =~ /^[0-9]/
 
-    # puts "Loading gem #{name} with version #{version}"
-    
     if loaded = Jambi.loaded_gems[name]
       unless loaded.version.send(*version.split)
          msg = "Can't activate #{name} for #{version}, "

@@ -8,18 +8,25 @@ class Jambi::Gem
   class Exception < RuntimeError; end
   class LoadError < ::LoadError; end
 
+  TYPES = %w|java universal|
+
   attr_accessor :dir
 
   def initialize(dir)
     @dir = dir
+    @pieces = full_name.split('-')
+    loop do
+      break unless TYPES.include? @pieces.last
+      (@type ||= []) << @pieces.pop
+    end
   end
 
   def version
-    @version ||= Jambi::Gem::Version.new(full_name.split('-').last)
+    @version ||= Jambi::Gem::Version.new(@pieces.last)
   end
 
   def name
-    @name ||= full_name.split('-')[0..-2].join('-')
+    @name ||= @pieces[0..-2].join('-')
   end
 
   def full_name
@@ -39,8 +46,8 @@ class Jambi::Gem
   end
 
   def load_dependencies!
-    return if spec.dependencies.empty?
-    spec.dependencies.each {|d| gem(*d)}
+    # return if spec.dependencies.empty?
+    # spec.dependencies.each {|d| gem(*d)}
   end
 
   def require_paths

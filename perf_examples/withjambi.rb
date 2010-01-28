@@ -4,5 +4,7 @@ begin
   gem 'doesntexist'
 rescue Gem::LoadError
 end
-require 'ruby-debug'
-gem 'rails', '= 2.2.2'
+gem 'nokogiri'
+require 'nokogiri'
+puts "Memory usage: " + `ps u #{Process.pid}`.split("\n").last.split[5]
+

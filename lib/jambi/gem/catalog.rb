@@ -11,5 +11,6 @@ class Jambi::Gem::Catalog
 
   def gems_by_name(name)
     (@gems_by_name ||= {})[name] ||= gems.select {|g| g.name == name}
+    @gems_by_name[name]
   end
 end
