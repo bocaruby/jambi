@@ -2,6 +2,7 @@ class Jambi::Gem::Catalog
   attr_reader :dir
 
   def initialize(dir)
+    raise "Invalid catalog!" if dir.nil?
     @dir = dir
   end
 

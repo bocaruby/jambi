@@ -31,7 +31,7 @@ module Jambi
   end
 
   def catalogs
-    @catalogs ||= [env_path, user_path, system_path].map {|p| Jambi::Gem::Catalog.new(p)}
+    @catalogs ||= [env_path, user_path, system_path].compact.map {|p| Jambi::Gem::Catalog.new(p) }
   end
 
   def gems_by(name, version)
