@@ -9,6 +9,7 @@ module Jambi::RequireExtension
     end
 
     Object.gem(name, '> 0')
+    super
   end
 
 end
