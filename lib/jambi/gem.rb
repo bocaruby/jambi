@@ -10,10 +10,11 @@ class Jambi::Gem
 
   TYPES = %w|java universal|
 
-  attr_accessor :dir
+  attr_accessor :dir, :catalog
 
-  def initialize(dir)
+  def initialize(dir, catalog)
     @dir = dir
+    @catalog = catalog
     @pieces = full_name.split('-')
     loop do
       break unless TYPES.include? @pieces.last

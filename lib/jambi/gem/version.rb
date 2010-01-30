@@ -59,6 +59,6 @@ class Jambi::Gem::Version
   end
 
   define_method('!=') do |other|
-    self != other
+    !(self == other)
   end
 end

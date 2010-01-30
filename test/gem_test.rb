@@ -2,7 +2,8 @@ require File.dirname(__FILE__) + '/test_helper'
 
 class GemTest < Test::Unit::TestCase
   def setup
-    @gem = Jambi::Gem.new('example_gem-1.2.3')
+    @catalog = Jambi::Gem::Catalog.new(MOCK_GEMS_PATH)
+    @gem = Jambi::Gem.new('example_gem-1.2.3', @catalog)
   end
 
   def test_responds_to_name
@@ -14,23 +15,23 @@ class GemTest < Test::Unit::TestCase
   end
 
   def test_equality
-    assert @gem == Jambi::Gem.new('example_gem-1.2.3')
+    assert @gem == Jambi::Gem.new('example_gem-1.2.3', @catalog)
   end
 
   def test_version_greater_than
-    assert @gem > Jambi::Gem.new('example_gem-1.0.0')
+    assert @gem > Jambi::Gem.new('example_gem-1.0.0', @catalog)
   end
 
   def test_version_less_than
-    assert @gem < Jambi::Gem.new('example_gem-1.5.0')
+    assert @gem < Jambi::Gem.new('example_gem-1.5.0', @catalog)
   end
 
   def test_name_greater_than
-    assert @gem > Jambi::Gem.new('another_gem-1.2.3')
+    assert @gem > Jambi::Gem.new('another_gem-1.2.3', @catalog)
   end
 
   def test_name_less_than
-    assert @gem < Jambi::Gem.new('zebra-0.0.0')
+    assert @gem < Jambi::Gem.new('zebra-0.0.0', @catalog)
   end
 end
 

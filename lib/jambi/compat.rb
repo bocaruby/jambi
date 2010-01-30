@@ -8,7 +8,7 @@ module Jambi::Compat
   end
 
   def self.loaded_specs
-    Jambi.loaded_gems.inject({}) do |h, k|
+    Jambi.instance.loaded_gems.inject({}) do |h, k|
       h[k.first] = k.last.spec
       h
     end
@@ -19,7 +19,7 @@ module Jambi::Compat
   end
 
   def self.ruby_version
-    Jambi.version
+    Jambi.instance.version
   end
 
   def self.ruby
@@ -27,8 +27,10 @@ module Jambi::Compat
   end
 
   def self.path
-    Jambi.catalogs.map {|c| c.dir}
+    Jambi.instance.catalogs.map {|c| c.dir}
   end
+
+  Version = Jambi::Gem::Version
 
   class Requirement
     attr_reader :version
@@ -77,7 +79,10 @@ module Jambi::Compat
   end
 
   class Specification
+    CURRENT_SPECIFICATION_VERSION = 3
+
     attr_reader :dependencies
+    attr_accessor :specification_version
 
     def initialize
       @info = {}
@@ -85,8 +90,16 @@ module Jambi::Compat
       yield self
     end
 
+    def add_runtime_dependency(name, version)
+
+    end
+
+    def add_development_dependency(name, version)
+      
+    end
+
     def add_dependency(name, version)
-      @dependencies << [name, version.first]
+      # @dependencies << [name, version.first]
     end
 
     def require_paths
