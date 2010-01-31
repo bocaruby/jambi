@@ -1,4 +1,3 @@
-require 'rbconfig'
 
 class Jambi
   autoload :Gem,                'jambi/gem'
@@ -6,10 +5,12 @@ class Jambi
   autoload :Compat,             'jambi/compat'
 
   def self.instance
-    @instance ||= self.new(:env_path, :user_path, :system_path)
+    require 'rbconfig' unless defined? RbConfig
+    @instance ||= self.new(RbConfig::CONFIG, :env_path, :user_path, :system_path)
   end
 
-  def initialize(*paths)
+  def initialize(config, *paths)
+    @config = config
     @paths = paths
   end
 
@@ -18,7 +19,7 @@ class Jambi
   end
 
   def version
-    @version ||= RbConfig::CONFIG['ruby_version']
+    @version ||= @config['ruby_version']
   end
 
   def dir
@@ -26,7 +27,7 @@ class Jambi
   end
 
   def lib_dir
-    @lib_dir ||= RbConfig::CONFIG['libdir']
+    @lib_dir ||= @config['libdir']
   end
 
   def system_path

@@ -2,7 +2,11 @@ require File.dirname(__FILE__) + '/test_helper'
 
 class JambiTest < Test::Unit::TestCase
   def setup
-    @jambi = Jambi.new(MOCK_GEMS_PATH)
+    @config = {
+      'ruby_version'  => '1.8.7',
+      'libdir'        => FIXTURES_PATH
+    }
+    @jambi = Jambi.new(@config, MOCK_GEMS_PATH)
   end
 
   def test_catalog_initialization
@@ -38,5 +42,6 @@ class JambiTest < Test::Unit::TestCase
     @jambi.load_gem(gem)
     assert @jambi.loaded_gems.has_key?(gem.name)
     assert_equal 1, @jambi.loaded_gems.values.size
+    assert_match /dummy-1\.2\.3\/lib/, $:.join(':')
   end
 end
