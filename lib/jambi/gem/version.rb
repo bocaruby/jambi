@@ -39,6 +39,10 @@ class Jambi::Gem::Version
     @version
   end
 
+  def to_s
+    to_a.compact.join('.')
+  end
+
   def <=>(other)
     @version.zip(normalize_other(other).to_a).each do |a, b|
       a ||= -1

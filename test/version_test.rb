@@ -55,4 +55,12 @@ class VersionTest < Test::Unit::TestCase
   def test_handles_version_0
     assert @version > '0'
   end
+
+  def test_to_s
+    assert @version.to_s == '1.2.3'
+    assert Jambi::Gem::Version.new('3').to_s == '3'
+    assert Jambi::Gem::Version.new('3.2').to_s == '3.2'
+    assert Jambi::Gem::Version.new('3.2.4').to_s == '3.2.4'
+    assert Jambi::Gem::Version.new('3.2.4.5').to_s == '3.2.4.5'
+  end
 end
