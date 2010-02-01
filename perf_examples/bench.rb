@@ -1,6 +1,6 @@
 require 'benchmark'
 
-n = 100
+n = 10
 
 Benchmark.bm do |x|
   x.report('rubygems') do
