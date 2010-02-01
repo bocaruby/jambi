@@ -70,4 +70,7 @@ if defined? Gem
 end
 Gem = Jambi::Compat
 
-Object.send(:include, Jambi::RequireExtension)
+# Don't globally override require when testing
+unless defined?(Jambi::TESTING_JAMBI)
+  Object.send(:include, Jambi::RequireExtension)
+end
