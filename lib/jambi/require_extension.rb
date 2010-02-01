@@ -8,13 +8,10 @@ module Jambi::RequireExtension
     rescue LoadError
     end
 
-    Object.gem(name, '> 0')
+    gem(name, '> 0')
     super
   end
 
-end
-
-module Kernel
   def gem(name, version='> 0')
     name, version = name.to_a if name.is_a? Jambi::Compat::Dependency
     version = "= #{version}" if version =~ /^[0-9]/
