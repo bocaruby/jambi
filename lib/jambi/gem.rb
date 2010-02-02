@@ -47,8 +47,8 @@ class Jambi::Gem
   end
 
   def load_dependencies!
-    return if spec.dependencies.empty?
-    spec.dependencies.each {|d| gem(*d)}
+    return if spec.runtime_dependencies.empty?
+    spec.runtime_dependencies.each {|d| Object.gem(*d)}
   end
 
   def require_paths

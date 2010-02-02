@@ -74,32 +74,34 @@ module Jambi::Compat
     end
 
     def search(dep)
-      Jambi.gems_by(*dep.to_a).map {|g| g.spec}
+      Jambi.instance.gems_by(*dep.to_a).map {|g| g.spec}
     end
   end
 
   class Specification
     CURRENT_SPECIFICATION_VERSION = 3
 
-    attr_reader :dependencies
+    attr_reader :dependencies, :runtime_dependencies, :development_dependencies
     attr_accessor :specification_version
 
     def initialize
       @info = {}
       @dependencies = []
+      @development_dependencies = []
+      @runtime_dependencies = []
       yield self
     end
 
     def add_runtime_dependency(name, version)
-
+      @runtime_dependencies << [name, version.first]
     end
 
     def add_development_dependency(name, version)
-      
+      @development_dependencies << [name, version.first]
     end
 
     def add_dependency(name, version)
-      # @dependencies << [name, version.first]
+      @dependencies << [name, version.first]
     end
 
     def require_paths
@@ -122,8 +124,11 @@ module Jambi::Compat
       ''
     end
 
+    def specification_version
+    end
+
     def respond_to?(meth)
-      meth.to_s =~ /=/ || @info.has_key?(meth.to_s)
+      meth.to_s =~ /=/ || @info.has_key?(meth.to_s) || super
     end
 
     def method_missing(meth, *value)

@@ -1,8 +1,8 @@
 module Jambi::RequireExtension
-  def require(name, &block)
+  def require(name)
     return if name =~ /^rubygems/i
 
-    # Try loading from the original require first
+    # puts "[REQ] " << name
     begin
       return super
     rescue LoadError
